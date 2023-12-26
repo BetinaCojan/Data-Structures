@@ -36,10 +36,10 @@ public:
 	}
 
 	Fraction divide(Fraction f) {
-		double temp = f.denom;
-		f.denom = f.num;
-		f.num = temp;
-		return multiply(f);
+		if (f.num == 0) {
+			std::cerr << "Error: Division by zero." << std::endl;
+		}
+		return multiply(Fraction(f.denom, f.num));
 	}
 };
 
