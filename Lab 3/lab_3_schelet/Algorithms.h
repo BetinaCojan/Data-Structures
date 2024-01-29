@@ -22,8 +22,45 @@ public:
      * @return pointer to the first node of the sorted list.
      */
     static Node<T> *sort(Node<T> *head) {
-        // TODO: TASK 3
-        return nullptr;
+        Node<T> *beforeCurrent;
+        Node<T> *afterCurrent;
+        Node<T> *current;
+        Node<T> *check;
+        Node<T> *tailSorted;
+
+        tailSorted = head;
+        check = head;
+
+        // update tail of sorted list
+        while(tailSorted->next != nullptr) {
+            tailSorted = check;
+            check = check->next;
+
+            // compare the data of tail with the data of the next node 
+            if (check->data < tailSorted->data) {
+                current = head;
+
+                // go to the position where the node must be inserted
+                while((current != check) && (current->data < check->data)) {
+                    beforeCurrent = current;
+                    current = current->next;
+                }
+
+                afterCurrent = current->next;
+
+                // change position of the found node
+                tailSorted->next = check->next;
+                check->next = current;
+                
+                if (current == head) {
+                    head = check;
+                } else {
+                    beforeCurrent->next = check;
+                }
+            }
+        }
+
+        return head;
     }
 
     /**
@@ -34,8 +71,45 @@ public:
      * @return pointer to the first node of the reversed list.
      */
     static Node<T> *reverse(Node<T> *head) {
-        // TODO: TASK 4
-        return nullptr;
+        Node<T>* tail;
+        Node<T>* second;
+        Node<T>* newHead;
+        Node<T>* current;
+
+        current = head;
+        while (current->next != nullptr) {
+            second = current;
+            current = current->next;
+        }
+
+        if (current != second) {
+            // set the head of the new list
+            newHead = current;
+            current->next = second;
+            second->next = nullptr;
+
+            // build connections for the reversed list
+            while (head->next != nullptr) {
+                tail = second;
+
+                // go through the list again with "current" pointer
+                current = head;
+                while (current->next != nullptr) {
+                    second = current;
+                    current = current->next;
+                }
+
+                // change the direction of the link between the end nodes
+                if (current != second) {
+                    current->next = second;
+                    second->next = nullptr;
+                } 
+            }
+        } 
+
+        head = newHead;
+
+        return head;
     }
 };
 

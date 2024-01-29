@@ -27,11 +27,15 @@ public:
      * will contain at most `capacity` elements.
      */
     SlidingWindow(const std::vector<T> container, int capacity) {
-        // TODO: BONUS 1
+        this->capacity = capacity;
+        this->container = container;
+
+        for (int i = 0; i < capacity; i++) {
+            window.addLast(container[i]);
+        }
     }
 
     ~SlidingWindow() {
-        // TODO: delete previously allocated stuff (if any)
     }
 
     /**
@@ -40,8 +44,28 @@ public:
      * @return A pointer to the new window head node.
      */
     Node<T> *advance() {
-        // TODO: BONUS 1
-        return nullptr;
+        // move the first element of the container to the last position
+        T element = container.front();
+        container.erase(container.begin());
+        container.push_back(element);
+        
+        Node<T> * current = getWindowHead();
+        int i = 0;
+
+        // iterates through the nodes of the window and updates the data of each node with the corresponding element in the container
+        while(i < capacity && current != nullptr) {
+            current->data = container[i];
+            current = current->next;
+            i++;
+        }
+
+        // if the window nodes have not been filled completely,fill up to maximum capacity
+        while(i < capacity && i < container.size()) {
+            window.addLast(container[i]);
+            i++;
+        }
+
+        return getWindowHead();
     }
 
     // Getter
